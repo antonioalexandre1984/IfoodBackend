@@ -29,4 +29,5 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
 # Comando de inicialização apontando para sua pasta setup
-CMD gunicorn setup.wsgi:application --bind 0.0.0.0:$PORT
+# O "sh -c" permite rodar dois comandos em sequência
+CMD sh -c "python manage.py migrate --noinput && gunicorn setup.wsgi:application --bind 0.0.0.0:$PORT"
