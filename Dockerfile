@@ -1,20 +1,28 @@
 FROM python:3.9-slim-buster
-ENV PYTHONUNBUFFERED 1
 
-# Define a porta padrão (o Render injetará a dele, mas isso serve de fallback)
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 ENV PORT 8000
 
-RUN mkdir /app
 WORKDIR /app
-ADD . /app/
 
-# Instala as dependências
+# Instala dependências do sistema necessárias para Pillow e outras libs
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt /app/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Expõe a porta para o mundo externo
+COPY . /app/
+
+# Coleta arquivos estáticos (importante para o painel administrativo funcionar)
+RUN python manage.py collectstatic --noinput
+
+# Expõe a porta
 EXPOSE 8000
 
-# Comando para rodar a aplicação usando gunicorn
-# Substitua 'nome_do_seu_projeto' pelo nome da pasta que contém o arquivo wsgi.py
+# Comando usando a sua pasta 'setup'
 CMD gunicorn setup.wsgi:application --bind 0.0.0.0:$PORT
