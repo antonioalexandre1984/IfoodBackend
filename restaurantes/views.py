@@ -34,11 +34,18 @@ class PratoViewSet(viewsets.ModelViewSet):
 
 class ListaPratosDeUmRestauranteView(generics.ListAPIView):
     """Listando pratos de um restaurante"""
+    
     def get_queryset(self):
-        queryset = Prato.objects.filter(restaurante_id=self.kwargs['pk'])
-        return queryset
+        # 1. Verifica se é apenas o Swagger fazendo uma varredura (inspeção)
+        if getattr(self, 'swagger_fake_view', False):
+            return Prato.objects.none()
+
+        # 2. Se for uma requisição real, filtra os pratos
+        # Usamos o pk que vem da URL: <int:pk>
+        return Prato.objects.filter(restaurante_id=self.kwargs.get('pk'))
+
     serializer_class = ListaPratosDeUmRestauranteSerializer
-    pagination_class=None
+    pagination_class = None
 
 class ListaRestaurantesView(generics.ListAPIView):
     """Listando restaurante"""
