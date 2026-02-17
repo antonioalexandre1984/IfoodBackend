@@ -28,11 +28,11 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'ifoodbackend-1.onrender.com',
-    "https://appfood-seven.vercel.app",
-    '.vercel.app' 
+    'appfood-seven.vercel.app',    # Sem https://
     'localhost', 
     '127.0.0.1', 
-    '.onrender.com', # Aceita qualquer subdomínio do Render'*'
+    '.vercel.app', 
+    '.onrender.com',
     ]
 
 
@@ -54,12 +54,11 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    "django.middleware.common.CommonMiddleware",
+    'corsheaders.middleware.CorsMiddleware',          # Sempre em primeiro
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',     # WhiteNoise logo após o Security
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    'django.middleware.common.CommonMiddleware',      # Apenas uma vez aqui
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -147,6 +146,25 @@ CORS_ALLOWED_ORIGINS = [
     "https://appfood-seven.vercel.app",
     "http://localhost:3000",
     
+]
+
+# Adicione estas linhas para reforçar a segurança do CORS
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 ]
 
 STATIC_URL = '/static/'
