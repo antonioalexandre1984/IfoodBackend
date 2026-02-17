@@ -27,7 +27,9 @@ SECRET_KEY = 'django-insecure-!jp904ldw&d6x3#)iznokh15cwt0fdx*l$^1kk$vc17r#%5*v4
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'ifoodbackend-1.onrender.com', 
+    'ifoodbackend-1.onrender.com',
+    'appfood-seven.vercel.app/',
+    '.vercel.app' 
     'localhost', 
     '127.0.0.1', 
     '.onrender.com', # Aceita qualquer subdomínio do Render'*'
